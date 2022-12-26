@@ -11,8 +11,9 @@
 
 # Technologies implemented:
 - NodeJS, 
-- ExpressJS and 
-- MongoDB. 
+- ExpressJS,
+- MongoDB and
+- Postman
 
 *Note: The Frontend/Views are collections on postman.*
 
