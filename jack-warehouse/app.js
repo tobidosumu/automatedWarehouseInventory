@@ -6,7 +6,7 @@ const port = 9000;
 
 app.use(express.json({ extended: true }));
 
-const itemRouter = require("./routes/item.route");
+const itemRouter = require("./routes/items.route");
 
 
 mongoose

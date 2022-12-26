@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -103,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
