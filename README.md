@@ -1,4 +1,4 @@
-# Project name: automatedWarehouseInventory
+# automatedWarehouseInventory
 
 # Instruction:
 ### Jack owns a warehouse, and his warehouse collects a different collection of processed food stuff. 
