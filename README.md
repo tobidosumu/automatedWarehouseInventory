@@ -1,0 +1,1 @@
+# automatedWarehouseInventory
