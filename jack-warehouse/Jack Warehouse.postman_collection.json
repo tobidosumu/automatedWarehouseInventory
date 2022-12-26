@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "10e43773-6e02-4e18-baa4-2f2d1d961682",
+		"name": "Jack Warehouse",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18151311"
+	},
+	"item": [
+		{
+			"name": "inventory",
+			"item": [
+				{
+					"name": "create inventory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/create",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get inventory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/getall",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update inventory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/update",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById inventory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/getbyid",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"getbyid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete inventory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/delete",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
