@@ -21,7 +21,11 @@ const ItemsSchema = new Schema({
   item_production_date: {
     type: Date,
   }
-});
+},
+
+{ timestamps: true }
+
+);
 
 const Items = mongoose.model("Items", ItemsSchema);
 
