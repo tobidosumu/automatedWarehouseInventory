@@ -10,6 +10,13 @@
 ### Jack possibly has as many as 25 rows in his warehouse. 
 ### Help Jack automate this service.
 
-## Team member:
+# Technologies implemented: in this project are: 
+- NodeJS, 
+- ExpressJS and 
+- MongoDB. 
+
+*Note: The Frontend/Views are collections on postman.*
+
+# Team member:
 ### <a href="https://github.com/Adenikecass">Adenike Margaret</a>
 https://github.com/Adenikecass
