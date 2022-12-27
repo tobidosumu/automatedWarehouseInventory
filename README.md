@@ -21,5 +21,9 @@
 ### <a href="https://github.com/Adenikecass">Adenike Margaret</a>
 https://github.com/Adenikecass
 
+# Your .env file should be configured like this:
+### PORT="9000" <!-- use port 9000 or any free port -->
+### MONGO_URI="<MongoDb API key goes here>" 
+
 # Project Deadline:
 ### January, 3rd, 2023
