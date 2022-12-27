@@ -1,6 +1,6 @@
 # Jack's Automated Warehouse
 
-# Instruction:
+# Project Instructions:
 ### Jack owns a warehouse, and his warehouse collects a different collection of processed food stuff. 
 ### Now Jack needs to manage the goods to be able to manage production and expiry. 
 ### Jack also needs to know what part of his warehouse he keeps specific goods. 
