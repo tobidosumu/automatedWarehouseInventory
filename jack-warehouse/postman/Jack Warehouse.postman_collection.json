@@ -1,22 +1,22 @@
 {
 	"info": {
-		"_postman_id": "10e43773-6e02-4e18-baa4-2f2d1d961682",
+		"_postman_id": "c0814acd-83b7-4cd3-91cb-e904e7a71710",
 		"name": "Jack Warehouse",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18151311"
+		"_exporter_id": "25080202"
 	},
 	"item": [
 		{
 			"name": "inventory",
 			"item": [
 				{
-					"name": "create inventory",
+					"name": "create item",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Berry3 Juice\",\r\n  \"weight\": 9000,\r\n  \"row_num\": 26,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,7 +37,7 @@
 					"response": []
 				},
 				{
-					"name": "get inventory",
+					"name": "get item",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -67,13 +67,13 @@
 					"response": []
 				},
 				{
-					"name": "update inventory",
+					"name": "update item",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -94,7 +94,7 @@
 					"response": []
 				},
 				{
-					"name": "getById inventory",
+					"name": "getById item",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -103,7 +103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -124,7 +124,7 @@
 					"response": []
 				},
 				{
-					"name": "delete inventory",
+					"name": "delete item",
 					"request": {
 						"method": "DELETE",
 						"header": [],
