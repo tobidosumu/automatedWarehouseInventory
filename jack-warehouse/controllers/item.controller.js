@@ -39,13 +39,19 @@ const itemController = {
     }
   },
 
+  // Get all items/objects from the database
+  getall: async (req, res) => {
+    try {
+      const items = await itemModel.find();
+      res.status(200).json({ status: "Items retrieved successfully", items });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  },
+  
 
   update: async (req, res) => {
     res.status(200).json({ status: "item updated successfully" });
-  },
-
-  getall: async (req, res) => {
-    res.status(200).json({ status: "items retrieved successfully" });
   },
 
   getbyid: async (req, res) => {
