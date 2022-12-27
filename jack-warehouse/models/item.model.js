@@ -1,24 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ItemsSchema = new Schema({
-  item_name: {
+const ItemSchema = new Schema({
+  name: {
     type: String,
     required: true,
   },
-  item_weight: {
-    type: Number,
-  },
-  counter_num: {
+  weight: {
     type: Number,
   },
   row_num: {
     type: Number,
+    min: 1,
+    max: 25,
   },
-  item_expiry_date: {
+  row_weight: {
+    type: Number,
+  },
+  expiry_date: {
     type: Date,
   },
-  item_production_date: {
+  production_date: {
     type: Date,
   }
 },
@@ -27,6 +29,6 @@ const ItemsSchema = new Schema({
 
 );
 
-const Items = mongoose.model("Items", ItemsSchema);
+const Items = mongoose.model("Items", ItemSchema);
 
 module.exports = Items;
