@@ -8,6 +8,8 @@ const ItemSchema = new Schema({
   },
   weight: {
     type: Number,
+    min: 1,
+    max: 10000,
   },
   row_num: {
     type: Number,
@@ -16,6 +18,8 @@ const ItemSchema = new Schema({
   },
   row_weight: {
     type: Number,
+    min: 1,
+    max: 10000,
   },
   expiry_date: {
     type: Date,
