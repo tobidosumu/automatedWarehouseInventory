@@ -22,9 +22,11 @@
 https://github.com/Adenikecass
 
 ## Your .env file should be configured like this:
-<!-- use port 9000 or any free port -->
+
+[//]: # (use port 9000 or any free port)
 ### PORT="9000" 
-<!-- MongoDb API key goes within the double quotes below -->
+
+[//]: # ( MongoDb API key goes between the double quotes below)
 ### MONGO_URI="" 
 
 ## Project Deadline:
