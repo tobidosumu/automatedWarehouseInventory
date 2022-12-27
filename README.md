@@ -1,4 +1,4 @@
-# Jack's Automated Warehouse
+# Jack's Automated Inventory Warehouse
 
 # Project Instructions:
 ### Jack owns a warehouse, and his warehouse collects a different collection of processed food stuff. 
