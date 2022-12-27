@@ -11,14 +11,28 @@ const itemController = {
       const rowWeight = await calculateRowWeight(doc.row_num);
 
       if (doc.row_num > 25) {
-        console.log(doc.row_num)
+        // console.log(doc.row_num)
         // Row number exceeds maximum of 25
         res.status(400).json({ status: "Maximum number of rows exceeded 25 rows" });
-      } else {
-        if (rowWeight + doc.weight > 10000) {
+      } 
+      else if (doc.row_num < 1)
+      {
+        // If row number is less than 1
+        res.status(400).json({ status: "Row number cannot be less than 1" });
+      }
+      else 
+      {
+        if (rowWeight + doc.weight > 10000) 
+        {
           // Row weight exceeds maximum capacity of 10 tonnes
           res.status(400).json({ status: "Maximum weight capacity of row exceeded 10 tonnes" });
-        } else {
+        } 
+        else if (rowWeight + doc.weight < 1) {
+          // If item weight is below 1 tonne
+          res.status(400).json({ status: "Item is below minimum weight of 1 tonne" });
+        } 
+        else 
+        {
           // Save the new item to the database
           await doc.save();
           // console.log(err, data);
