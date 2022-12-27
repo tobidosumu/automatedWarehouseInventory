@@ -25,12 +25,16 @@ const itemController = {
         if (rowWeight + doc.weight > 10000) 
         {
           // Row weight exceeds maximum capacity of 10 tonnes
-          res.status(400).json({ status: "Maximum weight capacity of row exceeded 10 tonnes" });
+          res.status(400).json({ status: "Maximum weight capacity of row exceeded 10 tonnes (10,000kg)" });
         } 
-        else if (rowWeight + doc.weight < 1) {
+        else if (doc.weight < 1) {
           // If item weight is below 1 tonne
-          res.status(400).json({ status: "Item is below minimum weight of 1 tonne" });
+          res.status(400).json({ status: "Item is than 1 tonne" });
         } 
+        else if (isNaN(doc.weight) || isNaN(doc.row_num)) {
+          // If a non-numeric value is entered for item weight or row number
+          res.status(400).json({ status: "Invalid value entered" });
+        }
         else 
         {
           // Save the new item to the database
