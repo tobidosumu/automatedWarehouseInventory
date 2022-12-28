@@ -98,34 +98,6 @@
 					"response": []
 				},
 				{
-					"name": "delete an item",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
-							"host": [
-								"{{jackurl}}"
-							],
-							"path": [
-								"item",
-								"delete",
-								"63ab4c28508382d1a34eb189"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "update an item",
 					"request": {
 						"method": "PATCH",
@@ -148,6 +120,34 @@
 								"item",
 								"update",
 								"63ac3b98b2f48fdb1ec024bb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete an item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"delete",
+								"63ab4c28508382d1a34eb189"
 							]
 						}
 					},
