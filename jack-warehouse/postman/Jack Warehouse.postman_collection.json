@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Berry3 Juice\",\r\n  \"weight\": 7,\r\n  \"row_num\": \"a\",\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Peanut Butter\",\r\n  \"weight\": 200,\r\n  \"row_num\": 24,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,7 +37,7 @@
 					"response": []
 				},
 				{
-					"name": "get item",
+					"name": "get all items",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -67,34 +67,7 @@
 					"response": []
 				},
 				{
-					"name": "update item",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{jackurl}}/item/update",
-							"host": [
-								"{{jackurl}}"
-							],
-							"path": [
-								"item",
-								"update"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getById item",
+					"name": "get item by id",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -103,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"item_name\": \"Sardine\",\r\n  \"item_weight\": 20,\r\n  \"counter_num\": 1,\r\n  \"row_num\": 1,\r\n  \"item_expiry_date\": \"2022-12-31\",\r\n  \"item_production_date\": \"2022-01-01\"\r\n}\r\n",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,26 +84,27 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/getbyid",
+							"raw": "{{jackurl}}/item/getbyid/63ab703cb51182217e07c993",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"getbyid"
+								"getbyid",
+								"63ab703cb51182217e07c993"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "delete item",
+					"name": "delete an item",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"product\" : \"Mango\",\r\n    \"rowNum\" : 1,\r\n    \"rowCapacity\" : \"25 tonn\",\r\n    \"expiryDate\" : \"7-01-23\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -138,13 +112,42 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete",
+							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"delete"
+								"delete",
+								"63ab4c28508382d1a34eb189"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update an item",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sausage\",\r\n    \"weight\": 1,\r\n    \"row_num\": 26\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/update/63ac3b98b2f48fdb1ec024bb",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"update",
+								"63ac3b98b2f48fdb1ec024bb"
 							]
 						}
 					},
