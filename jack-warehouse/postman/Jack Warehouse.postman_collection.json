@@ -177,14 +177,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/averageweight/7",
+							"raw": "{{jackurl}}/item/averageweight/3",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"averageweight",
-								"7"
+								"3"
 							]
 						}
 					},
@@ -203,6 +203,25 @@
 							"path": [
 								"item",
 								"emptyrows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get row capacity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/rowcapacity/7",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"rowcapacity",
+								"7"
 							]
 						}
 					},
