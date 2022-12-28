@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Peanut Butter\",\r\n  \"weight\": 200,\r\n  \"row_num\": 24,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Shear Butter\",\r\n  \"weight\": 700,\r\n  \"row_num\": 7,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -140,14 +140,32 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
+							"raw": "{{jackurl}}/item/delete/63ac332f7975b4e019187f70",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63ab4c28508382d1a34eb189"
+								"63ac332f7975b4e019187f70"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get total weight",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/gettotalweight",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"gettotalweight"
 							]
 						}
 					},
