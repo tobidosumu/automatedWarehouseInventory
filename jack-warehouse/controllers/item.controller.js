@@ -192,7 +192,26 @@ const itemController = {
     }
   },
 
-
+  // Get a list of rows with no items in them
+  getEmptyRows: async (req, res) => {
+    try {
+    // Find all items in the inventory
+    const items = await itemModel.find();
+    
+    // Get a list of all rows that have items in them
+    const rowsWithItems = items.map(item => item.row_num);
+    
+    // Get a list of all rows in the inventory
+    const allRows = [...Array(25).keys()].map(rowNum => rowNum + 1);
+    
+    // Find the rows that do not have any items in them
+    const emptyRows = allRows.filter(row => !rowsWithItems.includes(row));
+    
+    res.status(200).json({ status: "Empty rows retrieved successfully", emptyRows });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  },
   
 };
 
