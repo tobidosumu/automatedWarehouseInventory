@@ -9,5 +9,6 @@ router.patch("/update/:id", itemController.update);
 router.delete("/delete/:id", itemController.delete);
 
 router.get("/gettotalweight", itemController.getTotalWeight);
+router.get("/averageweight/:row", itemController.getAverageWeight);
 
 module.exports = router;
