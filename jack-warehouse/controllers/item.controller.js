@@ -212,6 +212,28 @@ const itemController = {
       res.status(400).json({ error: err.message });
     }
   },
+
+  // Get the remaining capacity of the specified row
+  getRowCapacity: async (req, res) => {
+    try {
+      // Get the row number from the request parameters
+      const rowNum = req.params.row;
+
+      // Find all items in the specified row
+      const items = await itemModel.find({ row_num: rowNum });
+
+      // Calculate the total weight of items in the row
+      const rowWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
+
+      // Calculate the remaining capacity by subtracting the row weight from the row capacity
+      const remainingCapacity = rowCapacity - rowWeight;
+
+      res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity  });
+    } catch (err) {
+      res.status(400).json({ error: err. Message });
+    }
+  },
+
   
 };
 
