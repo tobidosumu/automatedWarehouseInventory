@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Shear Butter\",\r\n  \"weight\": 700,\r\n  \"row_num\": 7,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Custard\",\r\n  \"weight\": 300,\r\n  \"row_num\": 3,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,6 +166,25 @@
 							"path": [
 								"item",
 								"gettotalweight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get average weight/row",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/averageweight/7",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"averageweight",
+								"7"
 							]
 						}
 					},
