@@ -76,62 +76,62 @@ const itemController = {
     }
   },
 
-// Update an item detail using the _id field
-update: async (req, res) => {
-  try {
-  // Get the ObjectId from the request parameters
-  const objectId = mongoose.Types.ObjectId(req.params.id);
-  
-  // Find the item with the matching ObjectId
-  const item = await itemModel.findById(objectId);
-  
-  // If the item was not found, return a 400 response
-  if (!item) {
-    res.status(400).json({ status: "Item not found" });
-  } else {
-    // Update the item details with the request body
-    item.name = req.body.name;
-    item.weight = req.body.weight;
-    item.row_num = req.body.row_num;
-  
-    // Check if the updated item details are valid
-    switch (true) {
-      case item.row_num > 25:
-        res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
-        break;
-      case item.row_num < 1:
-        res.status(400).json({ status: "Row number cannot be less than 1" });
-        break;
-      case item.weight < 1:
-        res.status(400).json({ status: "Item cannot be less than 1 tonne" });
-        break;
-      case isNaN(item.weight) || isNaN(item.row_num):
-        res.status(400).json({ status: "Invalid value entered" });
-        break;
-      default:
+  // Update an item detail using the _id field
+  update: async (req, res) => {
+    try {
+    // Get the ObjectId from the request parameters
+    const objectId = mongoose.Types.ObjectId(req.params.id);
+    
+    // Find the item with the matching ObjectId
+    const item = await itemModel.findById(objectId);
+    
+    // If the item was not found, return a 400 response
+    if (!item) {
+      res.status(400).json({ status: "Item not found" });
+    } else {
+      // Update the item details with the request body
+      item.name = req.body.name;
+      item.weight = req.body.weight;
+      item.row_num = req.body.row_num;
+    
+      // Check if the updated item details are valid
+      switch (true) {
+        case item.row_num > 25:
+          res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
+          break;
+        case item.row_num < 1:
+          res.status(400).json({ status: "Row number cannot be less than 1" });
+          break;
+        case item.weight < 1:
+          res.status(400).json({ status: "Item cannot be less than 1 tonne" });
+          break;
+        case isNaN(item.weight) || isNaN(item.row_num):
+          res.status(400).json({ status: "Invalid value entered" });
+          break;
+        default:
 
-      // Calculate the total weight of items in the row
-      const rowWeight = await calculateRowWeight(item.row_num);
+        // Calculate the total weight of items in the row
+        const rowWeight = await calculateRowWeight(item.row_num);
 
-      // Check if the updated item weight exceeds the row capacity
-      if (rowWeight + item.weight > rowCapacity) {
-        res.status(400).json({ status: `Row number (${item.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${item.name} weight (${item.weight} tonnes)` });
-      } else {
-        // Save the updated item to the database
-        await item.save();
-        res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
+        // Check if the updated item weight exceeds the row capacity
+        if (rowWeight + item.weight > rowCapacity) {
+          res.status(400).json({ status: `Row number (${item.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${item.name} weight (${item.weight} tonnes)` });
+        } else {
+          // Save the updated item to the database
+          await item.save();
+          res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
+        }
       }
     }
-  }
-  } catch (err) {
-    // Handle any errors that occur while updating the item
-    res.status(400).json({ error: err.Message });
-  }
-},
+    } catch (err) {
+      // Handle any errors that occur while updating the item
+      res.status(400).json({ error: err.Message });
+    }
+  },
 
-// Delete an item from the database
-delete: async (req, res) => {
-  try {
+  // Delete an item from the database
+  delete: async (req, res) => {
+    try {
     // Get the ObjectId from the request parameters
     const objectId = mongoose.Types.ObjectId(req.params.id);
   
@@ -152,7 +152,24 @@ delete: async (req, res) => {
       res.status(400).json({ error: err.message });
     }
 
-  }
+  },
+
+  // Get the total weight of all items in the inventory
+  getTotalWeight: async (req, res) => {
+    try {
+    // Find all items in the inventory
+    const items = await itemModel.find();
+    
+    // Calculate the total weight by summing the weight of each item
+    const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
+    
+    res.status(200).json({ status: "Total weight retrieved successfully", totalWeight });
+    } catch (err) {
+      res.status(400).json({ error: err.Message });
+    }
+  },
+
+  
   
 };
 
