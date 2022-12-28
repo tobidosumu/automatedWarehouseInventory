@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const itemModel = require("../models/item.model");
 const { calculateRowWeight } = require("../utilities/calculateRowWeight"); // Import the calculateRowWeight function from the utility module
 
+let rowCapacity = 10000 // rowCapacity as a global variable
+
 const itemController = {
   create: async (req, res) => {
-  try {
-  let rowCapacity = 10000
-  
+  try {  
     // Create a new item using the request body
     const doc = new itemModel(req.body);
   
@@ -36,8 +36,8 @@ const itemController = {
     }
     } catch (err) {
       // Handle any errors that occur while finding the item
-      // res.status(400).json({ error: err.message });
-      res.status(400).json({ status: "Error occurred while adding item" });
+      res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while adding item" });
     }
   },
   
@@ -48,9 +48,8 @@ const itemController = {
       res.status(200).json({ status: "Items retrieved successfully", items });
     } catch (err) {
       // Handle any errors that occur while finding the item
-      // res.status(400).json({ error: err.message });
-      res.status(400).json({ status: "Error occurred while retrieving all items" });
-
+      res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while retrieving all items" });
     }
   },
   
@@ -59,7 +58,7 @@ const itemController = {
     try {
       // Get the ObjectId from the request parameters
       const objectId = mongoose.Types.ObjectId(req.params.id);
-      console.log(objectId)
+
       // Find the item with the matching ObjectId
       const item = await itemModel.findById(objectId);
 
@@ -77,38 +76,58 @@ const itemController = {
     }
   },
 
-  // Update an item detail using the _id field
-  update: async (req, res) => {
-    try {
-    // Find the item with the matching ObjectId
-    const item = await itemModel.findById(objectId);
-    
-    // If the item was not found, return a 400 response
-    if (!item) {
-      res.status(400).json({ status: "Item not found" });
-    } else {
-      // Update the item details with the request body
-      item.name = req.body.name;
-      item.weight = req.body.weight;
-      item.row_num = req.body.row_num;
-    
+// Update an item detail using the _id field
+update: async (req, res) => {
+  try {
+  // Get the ObjectId from the request parameters
+  const objectId = mongoose.Types.ObjectId(req.params.id);
+  
+  // Find the item with the matching ObjectId
+  const item = await itemModel.findById(objectId);
+  
+  // If the item was not found, return a 400 response
+  if (!item) {
+    res.status(400).json({ status: "Item not found" });
+  } else {
+    // Update the item details with the request body
+    item.name = req.body.name;
+    item.weight = req.body.weight;
+    item.row_num = req.body.row_num;
+  
+    // Check if the updated item details are valid
+    switch (true) {
+      case item.row_num > 25:
+        res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
+        break;
+      case item.row_num < 1:
+        res.status(400).json({ status: "Row number cannot be less than 1" });
+        break;
+      case item.weight < 1:
+        res.status(400).json({ status: "Item cannot be less than 1 tonne" });
+        break;
+      case isNaN(item.weight) || isNaN(item.row_num):
+        res.status(400).json({ status: "Invalid value entered" });
+        break;
+      default:
+
       // Calculate the total weight of items in the row
       const rowWeight = await calculateRowWeight(item.row_num);
-    
+
       // Check if the updated item weight exceeds the row capacity
       if (rowWeight + item.weight > rowCapacity) {
         res.status(400).json({ status: `Row number (${item.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${item.name} weight (${item.weight} tonnes)` });
       } else {
         // Save the updated item to the database
         await item.save();
-        res.status(200).json({ status: `${item.name} updated successfully` });
+        res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
       }
     }
-    } catch (err) {
-      // Handle any errors that occur while updating the item
-      res.status(400).json({ error: err. Message });
-    }
-  },
+  }
+  } catch (err) {
+  // Handle any errors that occur while updating the item
+  res.status(400).json({ error: err.Message });
+  }
+},
 
   delete: async (req, res) => {
     try {
