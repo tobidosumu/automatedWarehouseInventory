@@ -10,5 +10,6 @@ router.delete("/delete/:id", itemController.delete);
 
 router.get("/gettotalweight", itemController.getTotalWeight);
 router.get("/averageweight/:row", itemController.getAverageWeight);
+router.get("/emptyrows", itemController.getEmptyRows);
 
 module.exports = router;
