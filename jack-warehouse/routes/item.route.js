@@ -8,4 +8,6 @@ router.get("/getbyid/:id", itemController.getbyid);
 router.patch("/update/:id", itemController.update);
 router.delete("/delete/:id", itemController.delete);
 
+router.get("/gettotalweight", itemController.getTotalWeight);
+
 module.exports = router;
