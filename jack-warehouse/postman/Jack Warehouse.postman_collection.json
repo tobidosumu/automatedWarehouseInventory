@@ -189,6 +189,24 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get empty rows",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/emptyrows",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"emptyrows"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
