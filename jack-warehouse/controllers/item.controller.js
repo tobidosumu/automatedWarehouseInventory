@@ -169,7 +169,30 @@ const itemController = {
     }
   },
 
-  
+  // Get the average weight of items in the specified row
+  getAverageWeight: async (req, res) => {
+    try {
+      // Get the row number from the request parameters
+      const rowNum = req.params.row;
+
+      // Find all items in the specified row
+      const items = await itemModel.find({ row_num: rowNum });
+
+      if (items.length === 0) {
+        res.status(200).json({ status: "This row is empty" });
+      } else {
+        // Calculate the average weight by dividing the total weight by the number of items
+        const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
+        const averageWeight = totalWeight / items.length;
+
+        res.status(200).json({ status: "Average weight retrieved successfully", averageWeight });
+      }
+    } catch (err) {
+      res.status(400).json({ error: err.Message });
+    }
+  },
+
+
   
 };
 
