@@ -124,32 +124,35 @@ update: async (req, res) => {
     }
   }
   } catch (err) {
-  // Handle any errors that occur while updating the item
-  res.status(400).json({ error: err.Message });
+    // Handle any errors that occur while updating the item
+    res.status(400).json({ error: err.Message });
   }
 },
 
-  delete: async (req, res) => {
-    try {
-      // Get the ObjectId from the request parameters
-      const objectId = mongoose.Types.ObjectId(req.params.id);
+// Delete an item from the database
+delete: async (req, res) => {
+  try {
+    // Get the ObjectId from the request parameters
+    const objectId = mongoose.Types.ObjectId(req.params.id);
   
-      // Delete the item with the matching ObjectId
-      const result = await itemModel.deleteOne({ _id: objectId });
+    // Find the item with the matching ObjectId
+    const item = await itemModel.findById(objectId);
   
-      // If no items were deleted, return a 400 response
-      if (result.deletedCount === 0) {
-        res.status(400).json({ status: "Item not found" });
-      } else {
-        // If the item was deleted, return a 200 response
-        res.status(200).json({ status: "Item deleted successfully" });
-      }
+    // If the item was not found, return a 400 response
+    if (!item) {
+      res.status(400).json({ status: "Item not found" });
+    } else {
+      // Delete the item from the database
+      await item.delete();
+      res.status(200).json({ status: `${item.name} deleted successfully` });
+    }
+
     } catch (err) {
       // Handle any errors that occur while deleting the item
       res.status(400).json({ error: err.message });
-      // res.status(400).json({ status: "user not updated successfully" });
     }
-  },
+
+  }
   
 };
 
