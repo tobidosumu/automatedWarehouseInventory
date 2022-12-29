@@ -12,6 +12,7 @@ router.get("/gettotalweight", itemController.getTotalWeight);
 router.get("/averageweight/:row", itemController.getAverageWeight);
 router.get("/emptyrows", itemController.getEmptyRows);
 router.get("/rowcapacity/:row", itemController.getRowCapacity);
+router.get("/row/:row", itemController.getItemsInRow);
 
 
 module.exports = router;
