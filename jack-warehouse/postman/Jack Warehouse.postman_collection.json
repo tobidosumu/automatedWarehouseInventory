@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Custard\",\r\n  \"weight\": 300,\r\n  \"row_num\": 3,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Plantain chips\",\r\n  \"weight\": 400,\r\n  \"row_num\": 4,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Sausage\",\r\n    \"weight\": 1,\r\n    \"row_num\": 26\r\n}",
+							"raw": "{\r\n    \"name\": \"Fruit Jam\",\r\n    \"weight\": 200,\r\n    \"row_num\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/update/63ac3b98b2f48fdb1ec024bb",
+							"raw": "{{jackurl}}/item/update/63ab4bafbff6789677a2772d",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"update",
-								"63ac3b98b2f48fdb1ec024bb"
+								"63ab4bafbff6789677a2772d"
 							]
 						}
 					},
@@ -140,14 +140,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63ac332f7975b4e019187f70",
+							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63ac332f7975b4e019187f70"
+								"63ab4c28508382d1a34eb189"
 							]
 						}
 					},
@@ -177,14 +177,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/averageweight/3",
+							"raw": "{{jackurl}}/item/averageweight/1",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"averageweight",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -221,6 +221,25 @@
 							"path": [
 								"item",
 								"rowcapacity",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get items in row",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/row/7",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"row",
 								"7"
 							]
 						}
