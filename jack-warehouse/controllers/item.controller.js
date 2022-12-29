@@ -6,54 +6,102 @@ let rowCapacity = 10000 // rowCapacity as a global variable
 
 const itemController = {
   create: async (req, res) => {
-  try {  
-    // Create a new item using the request body
-    const doc = new itemModel(req.body);
-  
-    // Calculate the total weight of items in the row
-    const rowWeight = await calculateRowWeight(doc.row_num);
-  
-    switch (true) {
-      case doc.row_num > 25:
-        res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
+    try {  
+      // Create a new item using the request body
+      const doc = new itemModel(req.body);
+    
+      // Calculate the total weight of items in the row
+      const rowWeight = await calculateRowWeight(doc.row_num);
+    
+      switch (true) {
+        // Checks if no name is entered for item
+        case doc.name === "":
+          res.status(400).json({ status: "Please, enter item name" });
+        break; 
+
+        // Checks if item weight is less than 1 tonne
+        case doc.weight < 1:
+          res.status(400).json({ status: "Item weight cannot be less than 1 tonne" });
+        break; 
+
+        /* 
+          Checks if row number is less than 1.
+          Note: This validaton can be removed if a set of values starting from 1 
+          is provided for Jack/users to select from
+        */
+        case doc.row_num < 1:
+          res.status(400).json({ status: "Row number cannot be less than 1" });
         break;
-      case doc.row_num < 1:
-        res.status(400).json({ status: "Row number cannot be less than 1" });
+
+        /* 
+          Checks if row number is less than 1.
+          Note: This validaton can be removed if a set of values ending at 25 
+          is provided for Jack/users to select from
+        */
+        case doc.row_num > 25:
+          res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
         break;
-      case rowWeight + doc.weight > rowCapacity:
-        res.status(400).json({ status: `Row number (${doc.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${doc.name} weight (${doc.weight} tonnes)` });
+
+        /* 
+          Checks if production date is selected.
+          Note: Date can be extracted from calendar
+        */ 
+        case doc.production_date === null || doc.production_date === undefined:
+          res.status(400).json({ status: "Please enter production date" });
+        break;   
+
+        /* 
+          Checks if expiry date is selected.
+          Note: Date can be extracted from calendar
+        */
+        case doc.expiry_date === null || doc.expiry_date === undefined:
+          res.status(400).json({ status: "Please enter expiry date" });
         break;
-      case doc.weight < 1:
-        res.status(400).json({ status: "Item cannot be less than 1 tonne" });
+
+        // Checks if row capacity(10 tonnes/10,000kg) is exceeded
+        case rowWeight + doc.weight > rowCapacity:
+          res.status(400).json({ status: `Row number (${doc.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${doc.name} weight (${doc.weight} tonnes)` });
         break;
-      case isNaN(doc.weight) || isNaN(doc.row_num):
-        res.status(400).json({ status: "Invalid value entered" });
+
+        // Checks if weight value or row value is numeric
+        case isNaN(doc.weight) || isNaN(doc.row_num):
+          res.status(400).json({ status: "Invalid value entered" });
         break;
-      default:
-        // Save the new item to the database
+
+        default:
+        // Save new item to database if all checks are valid
         await doc.save();
         res.status(200).json({ status: `${doc.name} added successfully` });
-    }
-    } catch (err) {
-      // Handle any errors that occur while finding the item
+      }
+    } 
+    catch (err) {
+      /* Handles any errors that occur while adding item to database.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.message });
-      // res.status(400).json({ status: "Error occurred while adding item" });
+      // res.status(400).json({ status: "Error occurred while inserting item" });
     }
   },
   
   // Get all items/objects from the database
   getall: async (req, res) => {
     try {
+      // Fetch all items from database
       const items = await itemModel.find();
       res.status(200).json({ status: "Items retrieved successfully", items });
-    } catch (err) {
-      // Handle any errors that occur while finding the item
+    } 
+    catch (err) {
+      /* Handles any errors that occur while fetching all items in database.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.message });
       // res.status(400).json({ status: "Error occurred while retrieving all items" });
     }
   },
   
-  // Get an item by its id from the database
+  // Get an item by its id from database
   getbyid: async (req, res) => {
     try {
       // Get the ObjectId from the request parameters
@@ -69,97 +117,140 @@ const itemController = {
         // If the item was found, return it in the response
         res.status(200).json({ status: "Item retrieved by id successfully", item });
       }
-    } catch (err) {
-      // Handle any errors that occur while finding the item
-      res.status(400).json({ status: "Error occurred while retrieving item" });
-      // res.status(400).json({ error: err.message });
+    } 
+    catch (err) {
+      /* Handles any errors that occur while getting item by id.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
+      res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while retrieving item (by id)" });
     }
   },
 
   // Update an item detail using the _id field
   update: async (req, res) => {
     try {
-    // Get the ObjectId from the request parameters
-    const objectId = mongoose.Types.ObjectId(req.params.id);
-    
-    // Find the item with the matching ObjectId
-    const item = await itemModel.findById(objectId);
-    
-    // If the item was not found, return a 400 response
-    if (!item) {
-      res.status(400).json({ status: "Item not found" });
-    } else {
-      // Update the item details with the request body
-      item.name = req.body.name;
-      item.weight = req.body.weight;
-      item.row_num = req.body.row_num;
-    
-      // Check if the updated item details are valid
-      switch (true) {
-        case item.row_num > 25:
-          res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
-          break;
-        case item.row_num < 1:
-          res.status(400).json({ status: "Row number cannot be less than 1" });
-          break;
-        case item.weight < 1:
-          res.status(400).json({ status: "Item cannot be less than 1 tonne" });
-          break;
-        case isNaN(item.weight) || isNaN(item.row_num):
-          res.status(400).json({ status: "Invalid value entered" });
-          break;
-        default:
+      // Get the ObjectId from the request parameters
+      const objectId = mongoose.Types.ObjectId(req.params.id);
+      
+      // Find the item with the matching ObjectId
+      const item = await itemModel.findById(objectId);
+      
+      // If the item was not found, return a 400 response
+      if (!item) {
+        res.status(400).json({ status: "Item not found" });
+      } else {
+        // Update the item details with the request body
+        item.name = req.body.name;
+        item.weight = req.body.weight;
+        item.row_num = req.body.row_num;
+      
+        // Checks if updated item details are valid
+        switch (true) {
+          // Checks if no name is entered for item
+          case doc.name === "":
+            res.status(400).json({ status: "Please, enter item name" });
+          break; 
 
-        // Calculate the total weight of items in the row
-        const rowWeight = await calculateRowWeight(item.row_num);
+          // Checks if item weight is less than 1 tonne
+          case doc.weight < 1:
+            res.status(400).json({ status: "Item weight cannot be less than 1 tonne" });
+          break; 
 
-        // Check if the updated item weight exceeds the row capacity
-        if (rowWeight + item.weight > rowCapacity) {
-          res.status(400).json({ status: `Row number (${item.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${item.name} weight (${item.weight} tonnes)` });
-        } else {
-          let itemName = item.name;
-          // Save the updated item to the database
-          await item.save();
-          // res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
-          res.status(200).json({ status: "Item updated successfully", itemName });
+          /* 
+            Checks if row number is less than 1.
+            Note: This validaton can be removed if a set of values starting from 1. 
+            is provided for Jack/users to select from
+          */
+          case doc.row_num < 1:
+            res.status(400).json({ status: "Row number cannot be less than 1" });
+          break;
+
+          /* 
+            Checks if row number is less than 1.
+            Note: This validaton can be removed if a set of values ending at 25 
+            is provided for Jack/users to select from
+          */
+          case doc.row_num > 25:
+            res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
+          break;
+
+          /* 
+            Checks if production date is selected.
+            Note: Date can be extracted from calendar
+          */ 
+          case doc.production_date === null || doc.production_date === undefined:
+            res.status(400).json({ status: "Please enter production date" });
+          break;   
+
+          /* 
+            Checks if expiry date is selected.
+            Note: Date can be extracted from calendar
+          */
+          case doc.expiry_date === null || doc.expiry_date === undefined:
+            res.status(400).json({ status: "Please enter expiry date" });
+          break;
+
+          // Checks if row capacity(10 tonnes/10,000kg) is exceeded
+          case rowWeight + doc.weight > rowCapacity:
+            res.status(400).json({ status: `Row number (${doc.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${doc.name} weight (${doc.weight} tonnes)` });
+          break;
+
+          // Checks if weight value or row value is numeric
+          case isNaN(doc.weight) || isNaN(doc.row_num):
+            res.status(400).json({ status: "Invalid value entered" });
+          break;
+
+          default:
+          // Save new item to database if all checks are valid
+          await doc.save();
+          res.status(200).json({ status: `${doc.name} added successfully` });
         }
       }
-    }
     } catch (err) {
-      // Handle any errors that occur while updating the item
+      /* Handles any errors that occur while updating item.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.Message });
+      // res.status(400).json({ status: "Error occurred while updating item" });
     }
   },
 
   // Delete an item from the database
   delete: async (req, res) => {
     try {
-    // Get the ObjectId from the request parameters
-    const objectId = mongoose.Types.ObjectId(req.params.id);
-  
-    // Find the item with the matching ObjectId
-    const item = await itemModel.findById(objectId);
-  
-    // If the item was not found, return a 400 response
-    if (!item) {
-      res.status(400).json({ status: "Item not found" });
-    } else {
-      // Delete the item from the database
-      await item.delete();
-      res.status(200).json({ status: `${item.name} deleted successfully` });
-    }
+      // Get the ObjectId from the request parameters
+      const objectId = mongoose.Types.ObjectId(req.params.id);
+    
+      // Find the item with the matching ObjectId
+      const item = await itemModel.findById(objectId);
+    
+      // If the item was not found, return a 400 response
+      if (!item) {
+        res.status(400).json({ status: "Item not found" });
+      } else {
+        // Delete the item from the database
+        await item.delete();
+        res.status(200).json({ status: `${item.name} deleted successfully` });
+      }
 
-    } catch (err) {
-      // Handle any errors that occur while deleting the item
+    } 
+    catch (err) {
+      /* Handles any errors that occur while deleting item.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while deleting item" });
     }
-
   },
 
-  // Get the total weight of all items in the inventory
+  // Get the total weight of all items in warehouse
   getTotalWeight: async (req, res) => {
     try {
-    // Find all items in the inventory
+    // Find all items in warehouse
     const items = await itemModel.find();
     
     // Calculate the total weight by summing the weight of each item
@@ -167,11 +258,16 @@ const itemController = {
     
     res.status(200).json({ status: "Total weight of all inventory retrieved successfully", totalWeight });
     } catch (err) {
+      /* Handles any errors that occur while getting total weight of items in warehouse.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.Message });
+      // res.status(400).json({ status: "Error occurred while retrieving item" });
     }
   },
 
-  // Get the average weight of items in the specified row
+  // Get average weight of items in a specified row
   getAverageWeight: async (req, res) => {
     try {
       // Get the row number from the request parameters
@@ -191,28 +287,38 @@ const itemController = {
         res.status(200).json({ status: `Average weight of row ${rowNum} items retrieved successfully`, averageWeight });
       }
     } catch (err) {
+      /* Handles any errors that occur while getting average weight of items in a row.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.Message });
+      // res.status(400).json({ status: "Error occurred while getting average row weight" });
     }
   },
 
-  // Get a list of rows with no items in them
+  // Get list of empty row(s)
   getEmptyRows: async (req, res) => {
     try {
-    // Find all items in the inventory
+    // Find all items in warehouse/database
     const items = await itemModel.find();
     
-    // Get a list of all rows that have items in them
+    // Get list of all rows with item(s)
     const rowsWithItems = items.map(item => item.row_num);
     
-    // Get a list of all rows in the inventory
+    // Get list of all rows in warehouse/database
     const allRows = [...Array(25).keys()].map(rowNum => rowNum + 1);
     
-    // Find the rows that do not have any items in them
+    // Find empty rows
     const emptyRows = allRows.filter(row => !rowsWithItems.includes(row));
     
     res.status(200).json({ status: "Empty rows retrieved successfully", emptyRows });
     } catch (err) {
+      /* Handles any errors that occur while updating item.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while generating list of empty rows" });
     }
   },
 
@@ -232,18 +338,24 @@ const itemController = {
       const remainingCapacity = rowCapacity - rowWeight;
 
       res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity  });
-    } catch (err) {
+    } 
+    catch (err) {
+      /* Handles any errors that occur while getting the remaining storage space of a specified row.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err. Message });
+      // res.status(400).json({ status: "Error occurred while getting remaining row capacity" });
     }
   },
 
-  // Get all items in a row
+  // Get list of all items in a row
   getItemsInRow: async (req, res) => {
     try {
       // Get the row number from the request parameters
       const rowNum = req.params.row;
 
-      // Find all items in the specified row
+      // Find all items in a specified row
       const items = await itemModel.find({ row_num: rowNum });
 
       // If there are no items in the row, return a 400 response
@@ -253,14 +365,16 @@ const itemController = {
         // If there are items in the row, return them in the response
         res.status(200).json({ status: "Items retrieved successfully", items });
       }
-    } catch (err) {
-      // Handle any errors that occur while finding the items
+    } 
+    catch (err) {
+      /* Handles any errors that occur while generating list of items in a row.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
       res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while generating list of items in row" });
     }
-  },
-
-
-  
+  }
 };
 
 module.exports = itemController;
