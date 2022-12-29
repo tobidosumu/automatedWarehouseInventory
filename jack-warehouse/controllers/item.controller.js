@@ -117,9 +117,11 @@ const itemController = {
         if (rowWeight + item.weight > rowCapacity) {
           res.status(400).json({ status: `Row number (${item.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${item.name} weight (${item.weight} tonnes)` });
         } else {
+          let itemName = item.name;
           // Save the updated item to the database
           await item.save();
-          res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
+          // res.status(200).json({ status: `Item updated successfully. New item is ${item.name}` });
+          res.status(200).json({ status: "Item updated successfully", itemName });
         }
       }
     }
@@ -163,7 +165,7 @@ const itemController = {
     // Calculate the total weight by summing the weight of each item
     const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
     
-    res.status(200).json({ status: "Total weight retrieved successfully", totalWeight });
+    res.status(200).json({ status: "Total weight of all inventory retrieved successfully", totalWeight });
     } catch (err) {
       res.status(400).json({ error: err.Message });
     }
@@ -185,7 +187,8 @@ const itemController = {
         const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
         const averageWeight = totalWeight / items.length;
 
-        res.status(200).json({ status: "Average weight retrieved successfully", averageWeight });
+        // res.status(200).json({ status: "Average weight retrieved successfully", averageWeight });
+        res.status(200).json({ status: `Average weight of row ${rowNum} items retrieved successfully`, averageWeight });
       }
     } catch (err) {
       res.status(400).json({ error: err.Message });
@@ -233,6 +236,29 @@ const itemController = {
       res.status(400).json({ error: err. Message });
     }
   },
+
+  // Get all items in a row
+  getItemsInRow: async (req, res) => {
+    try {
+      // Get the row number from the request parameters
+      const rowNum = req.params.row;
+
+      // Find all items in the specified row
+      const items = await itemModel.find({ row_num: rowNum });
+
+      // If there are no items in the row, return a 400 response
+      if (items.length === 0) {
+        res.status(400).json({ status: "This row is empty" });
+      } else {
+        // If there are items in the row, return them in the response
+        res.status(200).json({ status: "Items retrieved successfully", items });
+      }
+    } catch (err) {
+      // Handle any errors that occur while finding the items
+      res.status(400).json({ error: err.message });
+    }
+  },
+
 
   
 };
