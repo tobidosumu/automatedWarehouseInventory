@@ -12,17 +12,19 @@ const ItemSchema = new Schema({
     min: 1,
     max: 10000,
     required: true,
+    default: 0
   },
   row_num: {
     type: Number,
     min: 1,
     max: 25,
     required: true,
+    default: 0
   },
   row_weight: {
     type: Number,
     min: 1,
-    max: 10000,
+    max: 10000
   },
   production_date: {
     type: Date,
@@ -32,10 +34,7 @@ const ItemSchema = new Schema({
   expiry_date: {
     type: Date,
     required: true,
-  },
-  tag: {
-    type: String,
-    required: true,
+    default: ""
   }
 },
 
