@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"MANGO $ ju ice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"production_date\": \"2022-12-29\",\r\n  \"expiry_date\": \"2022-12-30\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Apple $ ju ice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"production_date\": \"2022-12-29\",\r\n  \"expiry_date\": \"2023-12-30\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -260,6 +260,37 @@
 								"item",
 								"getbyname",
 								" GrillEd ( * "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find expiring items",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"63ae027fda840c5df464105a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{jackurl}}/item/find_expiring_items/",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"find_expiring_items",
+								""
 							]
 						}
 					},
