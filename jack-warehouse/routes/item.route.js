@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const itemController = require("../controllers/item.controller");
+const itemModel = require("../models/item.model");
 
 router.post("/create", itemController.create);
 router.get("/getall", itemController.getall);
@@ -14,6 +15,6 @@ router.get("/emptyrows", itemController.getEmptyRows);
 router.get("/rowcapacity/:row", itemController.getRowCapacity);
 router.get("/row/:row", itemController.getItemsInRow);
 router.get("/getbyname/:name", itemController.getbyname);
-
+router.get("/find_expiring_items", itemController.findExpiringItems);
 
 module.exports = router;
