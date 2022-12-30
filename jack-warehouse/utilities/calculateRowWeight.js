@@ -23,6 +23,4 @@ async function calculateRowWeight(rowNum) {
   }
 }
 
-module.exports = {
-  calculateRowWeight,
-};
+module.exports = calculateRowWeight;
