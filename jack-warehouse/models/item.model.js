@@ -26,6 +26,11 @@ const ItemSchema = new Schema({
     min: 1,
     max: 10000
   },
+  tag: {
+    type: String,
+    required: true,
+    default: "default-tag"
+  },
   production_date: {
     type: Date,
     required: true,
