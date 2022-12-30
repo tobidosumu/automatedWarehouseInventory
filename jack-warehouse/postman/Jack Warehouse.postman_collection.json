@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Plantain chips\",\r\n  \"weight\": 400,\r\n  \"row_num\": 4,\r\n  \"expiry_date\": \"2022-12-31\",\r\n  \"production_date\": \"2022-02-01\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"MANGO $ ju ice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"production_date\": \"2022-12-29\",\r\n  \"expiry_date\": \"2022-12-30\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,14 +84,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/getbyid/63ab703cb51182217e07c993",
+							"raw": "{{jackurl}}/item/getbyid/63aeaad08b8d9c41bcfa915f",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"getbyid",
-								"63ab703cb51182217e07c993"
+								"63aeaad08b8d9c41bcfa915f"
 							]
 						}
 					},
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Fruit Jam\",\r\n    \"weight\": 200,\r\n    \"row_num\": 1\r\n}",
+							"raw": "{\r\n    \"name\": \"mango    JUI CE &% \",\r\n    \"weight\": 20,\r\n    \"row_num\": 9,\r\n    \"production_date\": \"2022-12-29T00:00:00.000Z\",\r\n    \"expiry_date\": \"2022-12-30T00:00:00.000Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/update/63ab4bafbff6789677a2772d",
+							"raw": "{{jackurl}}/item/update/63aeaad08b8d9c41bcfa915f",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"update",
-								"63ab4bafbff6789677a2772d"
+								"63aeaad08b8d9c41bcfa915f"
 							]
 						}
 					},
@@ -140,14 +140,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63ab4c28508382d1a34eb189",
+							"raw": "{{jackurl}}/item/delete/63aeca662b0c12fb5ad8d14e",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63ab4c28508382d1a34eb189"
+								"63aeca662b0c12fb5ad8d14e"
 							]
 						}
 					},
@@ -177,14 +177,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/averageweight/1",
+							"raw": "{{jackurl}}/item/averageweight/24",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"averageweight",
-								"1"
+								"24"
 							]
 						}
 					},
@@ -214,14 +214,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/rowcapacity/7",
+							"raw": "{{jackurl}}/item/rowcapacity/24",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"rowcapacity",
-								"7"
+								"24"
 							]
 						}
 					},
@@ -233,14 +233,33 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/row/7",
+							"raw": "{{jackurl}}/item/row/24",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"row",
-								"7"
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get items with same word in name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/getbyname/ GrillEd ( * ",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"getbyname",
+								" GrillEd ( * "
 							]
 						}
 					},
