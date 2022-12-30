@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const itemModel = require("../models/item.model");
-const { calculateRowWeight } = require("../utilities/calculateRowWeight"); // Import the calculateRowWeight function from the utility module
+const calculateRowWeight = require("../utilities/calculateRowWeight"); // Import the calculateRowWeight function from the utility module
 
 let rowCapacity = 10000 // rowCapacity as a global variable
 
@@ -434,7 +434,6 @@ const itemController = {
         .replace(/\s{2,}/g, ' '
       );
 
-      console.log(name)
       // Find items with names that contain the provided name
       const items = await itemModel.find({ name: { $regex: name } });
 
@@ -455,8 +454,46 @@ const itemController = {
       res.status(400).json({ error: err.message });
       // res.status(400).json({ status: "Error occurred while finding item(s)" });
     }
-  }
+  },
 
+  // Method for finding items that are halfway to being expired
+  findExpiringItems: async (req, res) => {
+    try {
+      // Retrieve all items from the database
+      const items = await itemModel.find();
+
+      // Initialize an empty array to store expiring items
+      const expiringItems = [];
+
+      // Loop through the items
+      for (const item of items) {
+        // Calculate the shelf life of the item
+        const shelfLife = item.expiry_date - item.production_date;
+
+        // Calculate the current shelf life of the item
+        const currentShelfLife = new Date() - item.production_date;
+
+        // If the current shelf life of the item is greater than or equal to 50% of its shelf life, add it to the expiringItems array
+        if (currentShelfLife / shelfLife >= 0.5) {
+          expiringItems.push(item);
+        }
+      }
+
+      // Send a 200 OK response with the expiring items
+      res.status(200).json({ status: "Expiring Item(s):", expiringItems });
+
+    } 
+    catch (err) 
+    {
+      /* Handles any errors that occur while finding items about to expire.
+        Note: I prefer to use this error-handling format during dev 
+        as it provides useful debugging error message.
+      */
+      res.status(400).json({ error: err.message });
+      // res.status(400).json({ status: "Error occurred while finding item(s) about to expire" });
+      // console.error(err);
+    }
+  }
 
 };
 
