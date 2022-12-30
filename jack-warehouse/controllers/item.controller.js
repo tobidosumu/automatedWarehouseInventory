@@ -479,7 +479,7 @@ const itemController = {
         }
       }
 
-      // Send a 200 OK response with the expiring items
+      // This can be sent as a notification to Jack
       res.status(200).json({ status: "Expiring Item(s):", expiringItems });
 
     } 
