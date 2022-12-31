@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Apple Juice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"tag\": \"Juice\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Cherry Blast\",\r\n  \"weight\": 1000,\r\n  \"row_num\": 20,\r\n  \"tag\": \"Blast\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,14 +84,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/getbyid/63aeaad08b8d9c41bcfa915f",
+							"raw": "{{jackurl}}/item/getbyid/63b02e43b27148438b660cfa",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"getbyid",
-								"63aeaad08b8d9c41bcfa915f"
+								"63b02e43b27148438b660cfa"
 							]
 						}
 					},
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mango blast\",\r\n    \"weight\": 20,\r\n    \"row_num\": 9,\r\n    \"production_date\": \"2022-12-29\",\r\n    \"expiry_date\": \"2023-12-30\"\r\n}",
+							"raw": "{\r\n    \"name\": \"mango blast\",\r\n    \"weight\": 10,\r\n    \"row_num\": 1,\r\n    \"tag\": \"\",\r\n    \"production_date\": \"2022-12-29\",\r\n    \"expiry_date\": \"2023-12-31\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/update/63b018fc1dcfbd9528b449fd",
+							"raw": "{{jackurl}}/item/update/63b02e43b27148438b660cfa",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"update",
-								"63b018fc1dcfbd9528b449fd"
+								"63b02e43b27148438b660cfa"
 							]
 						}
 					},
@@ -140,50 +140,87 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63b01bc5b21121623b109c32",
+							"raw": "{{jackurl}}/item/delete/63b02e43b27148438b660cfa",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63b01bc5b21121623b109c32"
+								"63b02e43b27148438b660cfa"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get total weight",
+					"name": "get rows total weight",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/gettotalweight",
+							"raw": "{{jackurl}}/item/get_rows_total_weight",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"gettotalweight"
+								"get_rows_total_weight"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get average weight/row",
+					"name": "get average weight in a row",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/averageweight/24",
+							"raw": "{{jackurl}}/item/get_average_weight/2",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"averageweight",
+								"get_average_weight",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all empty rows",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/get_all_empty_rows",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"get_all_empty_rows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get row stock level",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/row_stock_level/24",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"row_stock_level",
 								"24"
 							]
 						}
@@ -191,36 +228,18 @@
 					"response": []
 				},
 				{
-					"name": "get empty rows",
+					"name": "get items by row number",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/emptyrows",
+							"raw": "{{jackurl}}/item/get_items_by_row_number/24",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"emptyrows"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get row capacity",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{jackurl}}/item/rowcapacity/24",
-							"host": [
-								"{{jackurl}}"
-							],
-							"path": [
-								"item",
-								"rowcapacity",
+								"get_items_by_row_number",
 								"24"
 							]
 						}
@@ -228,45 +247,26 @@
 					"response": []
 				},
 				{
-					"name": "get items in row",
+					"name": "get items by name",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/row/24",
+							"raw": "{{jackurl}}/item/get_items_by_name/juice",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
-								"row",
-								"24"
+								"get_items_by_name",
+								"juice"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get items with same word in name",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{jackurl}}/item/getbyname/mango",
-							"host": [
-								"{{jackurl}}"
-							],
-							"path": [
-								"item",
-								"getbyname",
-								"mango"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find expiring items",
+					"name": "get expiring items",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -302,14 +302,32 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/get_items_by_tag/juice",
+							"raw": "{{jackurl}}/item/get_items_by_tag/Juice",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"get_items_by_tag",
-								"juice"
+								"Juice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get rows running out of stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/get_rows_running_out_of_stock",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"get_rows_running_out_of_stock"
 							]
 						}
 					},
