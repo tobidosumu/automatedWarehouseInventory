@@ -10,13 +10,14 @@ router.patch("/update/:id", itemController.update);
 router.delete("/delete/:id", itemController.delete);
 
 // For handling extra operations
-router.get("/gettotalweight", itemController.getTotalWeight);
-router.get("/averageweight/:row", itemController.getAverageWeight);
-router.get("/emptyrows", itemController.getEmptyRows);
-router.get("/rowcapacity/:row", itemController.getRowCapacity);
-router.get("/row/:row", itemController.getItemsInRow);
-router.get("/getbyname/:name", itemController.getbyname);
+router.get("/get_rows_total_weight", itemController.getRowsTotalWeight);
+router.get("/get_average_weight/:row", itemController.getRowAverageWeight);
+router.get("/get_all_empty_rows", itemController.getAllEmptyRows);
+router.get("/row_stock_level/:row", itemController.getRowStockLevel);
+router.get("/get_items_by_row_number/:row", itemController.getItemsByRowNum);
+router.get("/get_items_by_name/:name", itemController.getItemsByName);
 router.get("/find_expiring_items", itemController.findExpiringItems);
 router.get("/get_items_by_tag/:tag", itemController.getItemsByTag);
+router.get("/get_rows_running_out_of_stock", itemController.getRowsRunningOutOfStock);
 
 module.exports = router;
