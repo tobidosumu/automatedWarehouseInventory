@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Apple $ ju ice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"production_date\": \"2022-12-29\",\r\n  \"expiry_date\": \"2023-12-30\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Apple Juice\",\r\n  \"weight\": 20,\r\n  \"row_num\": 24,\r\n  \"tag\": \"Juice\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mango    JUI CE &% \",\r\n    \"weight\": 20,\r\n    \"row_num\": 9,\r\n    \"production_date\": \"2022-12-29T00:00:00.000Z\",\r\n    \"expiry_date\": \"2022-12-30T00:00:00.000Z\"\r\n}",
+							"raw": "{\r\n    \"name\": \"mango blast\",\r\n    \"weight\": 20,\r\n    \"row_num\": 9,\r\n    \"production_date\": \"2022-12-29\",\r\n    \"expiry_date\": \"2023-12-30\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/update/63aeaad08b8d9c41bcfa915f",
+							"raw": "{{jackurl}}/item/update/63b018fc1dcfbd9528b449fd",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"update",
-								"63aeaad08b8d9c41bcfa915f"
+								"63b018fc1dcfbd9528b449fd"
 							]
 						}
 					},
@@ -140,14 +140,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63aeca662b0c12fb5ad8d14e",
+							"raw": "{{jackurl}}/item/delete/63b01bc5b21121623b109c32",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63aeca662b0c12fb5ad8d14e"
+								"63b01bc5b21121623b109c32"
 							]
 						}
 					},
@@ -252,14 +252,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/getbyname/ GrillEd ( * ",
+							"raw": "{{jackurl}}/item/getbyname/mango",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"getbyname",
-								" GrillEd ( * "
+								"mango"
 							]
 						}
 					},
@@ -291,6 +291,25 @@
 								"item",
 								"find_expiring_items",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get items by tag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{jackurl}}/item/get_items_by_tag/juice",
+							"host": [
+								"{{jackurl}}"
+							],
+							"path": [
+								"item",
+								"get_items_by_tag",
+								"juice"
 							]
 						}
 					},
