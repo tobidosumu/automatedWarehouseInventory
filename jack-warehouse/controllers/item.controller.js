@@ -33,7 +33,7 @@ const itemController = {
           res.status(400).json({ status: "Please, enter item name" });
         break; 
 
-        case doc.tag === "default-tag":
+        case doc.tag === "":
           res.status(400).json({ status: "Please, select a tag for this item"})
         break;
         
@@ -108,20 +108,12 @@ const itemController = {
       // Fetch all items from database
       const items = await itemModel.find();
 
-      // if (Object.keys(emptyRows).length > 0) {
-      //   // Sends a notification to Jack
-      //   res.status(200).json({ status: "Empty row(s):", emptyRows });
-      //   } else {
-      //   // When no expiring item is found
-      //   res.status(400).json({ status: "No empty row found. All rows are currently stocked. :)" });
-      // }
-
+      // Checks if there is an item in the database/warehouse
       if (Object.keys(items).length > 0) {
-        // Checks if there is no item in the warehouse 
-        res.status(400).json({ status: "All item(s) in the warehouse:", items });
+        res.status(200).json({ status: "All item(s) in the warehouse:", items });
       } else {
-        // In the event that no item was found in the database
-        res.status(200).json({ status: "Warehouse is empty" });
+        // In the event that no item was found
+        res.status(400).json({ status: "Warehouse is empty" });
       }
     } 
     catch (err) {
