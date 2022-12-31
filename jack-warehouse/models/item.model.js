@@ -10,7 +10,7 @@ const ItemSchema = new Schema({
   weight: {
     type: Number,
     min: 1,
-    max: 10000,
+    max: 10000, // (kg)
     required: true,
     default: 0
   },
@@ -24,7 +24,7 @@ const ItemSchema = new Schema({
   row_weight: {
     type: Number,
     min: 1,
-    max: 10000
+    max: 10000 // (kg)
   },
   tag: {
     type: String,
