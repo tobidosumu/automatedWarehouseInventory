@@ -101,7 +101,7 @@ const itemController = {
       // res.status(400).json({ status: "Error occurred while inserting item" });
     }
   },
-  
+
   // Get all items/objects from the database
   getall: async (req, res) => {
     try {
@@ -374,7 +374,7 @@ const itemController = {
       const remainingCapacity = rowCapacity - rowWeight;
 
       // res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity });
-      res.status(200).json({ status: "Row capacity retrieved successfully", 
+      res.status(200).json({ status: `Row (${rowNum}) capacity retrieved successfully`, 
       remainingCapacity: `${remainingCapacity}kg` });
 
     } 
@@ -402,7 +402,7 @@ const itemController = {
         res.status(400).json({ status: "This row is empty" });
       } else {
         // If there are items in the row, return them in the response
-        res.status(200).json({ status: "Items retrieved successfully", items });
+        res.status(200).json({ status: `Row (${rowNum}) items retrieved successfully`, items });
       }
     } 
     catch (err) {
@@ -421,29 +421,22 @@ const itemController = {
 
       // Get the name from the request parameters
       const name = req.params.name
-        // Converts item name to lowercase
-        .toLowerCase()
-        // Removes leading and trailing whitespace from item name
-        .trim()
-        // Removes all whitespace within item name (i.e. extra spaces between letters)
-        .replace(/\s+/g, '')
-        // Removes all special characters from item name
-        .replace(/[^\w\s]/gi, '')
-        // Adds a space between each word in item name // not working yet
-        .replace(/\b(\w+)\b/g, '$1 ')
-        // Replaces multiple spaces with a single space
-        .replace(/\s{2,}/g, ' '
-      );
+      // Converts item name to lowercase
+      .toLowerCase()
+      // Removes leading and trailing whitespace from item name
+      .trim()
+      // Accepts only lowercase and uppercase letters
+      .replace(/[^a-zA-Z]/g, ' ')
 
       // Find items with names that contain the provided name
       const items = await itemModel.find({ name: { $regex: name } });
 
       if (items.length === 0) {
         // If no items were found, return a 400 response
-        res.status(400).json({ status: "No items found with the specified name" });
+        res.status(400).json({ status: `No item with the name (${name}) exists in the warehouse` });
       } else {
         // Return the found items in the response
-        res.status(200).json({ status: "Items retrieved by name successfully", items });
+        res.status(200).json({ status: `Items with the name (${name}) retrieved successfully`, items });
       }
 
     } 
@@ -480,9 +473,16 @@ const itemController = {
         }
       }
 
-      // This can be sent as a notification to Jack
-      res.status(200).json({ status: "Expiring Item(s):", expiringItems });
+      console.log(typeof expiringItems)
 
+      // Checks if no expiring item(s) exist(s)
+      if (Object.keys(expiringItems).length > 0) {
+        // Sends a notification to Jack
+        res.status(200).json({ status: "Expiring Item(s):", expiringItems });
+        } else {
+        // When no expiring item is found
+        res.status(400).json({ status: "No item is about to expire. Everything fresh! :)" });
+      }
     } 
     catch (err) 
     {
@@ -496,92 +496,29 @@ const itemController = {
     }
   },
 
-  // This method creates a tag for a group of items of the same type
-  // tag: async (req, res) => {
-  //   try {  
-  //     // Create a new tag using the request body
-  //     const doc = new itemModel(req.body);
-
-  //     // Convert the item tag to lowercase
-  //     itemsTag = doc.tag
-  //     // Converts item name to lowercase
-  //     .toLowerCase()
-  //     .trim()
-  //     .replace(/[^a-zA-Z]/g, ' ')
-    
-  //     // Holds the value of the tag from the database
-  //     const itemsTag = await doc.tag
-    
-  //     switch (true) {
-  //       // Checks if no tag is entered for item
-  //       case doc.tag === "default-tag":
-  //         res.status(400).json({ status: "Please, enter tag name" });
-  //       break; 
-
-  //       // Checks if item weight is less than 1 tonne
-  //       case doc.weight < 1:
-  //         res.status(400).json({ status: "Item weight cannot be less than 1 tonne" });
-  //       break; 
-
-  //       /* 
-  //         Checks if row number is less than 1.
-  //         Note: This validaton can be removed if a set of values starting from 1 
-  //         is provided for Jack/users to select from
-  //       */
-  //       case doc.row_num < 1:
-  //         res.status(400).json({ status: "Row number cannot be less than 1" });
-  //       break;
-
-  //       /* 
-  //         Checks if row number is less than 1.
-  //         Note: This validaton can be removed if a set of values ending at 25 
-  //         is provided for Jack/users to select from
-  //       */
-  //       case doc.row_num > 25:
-  //         res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
-  //       break;
-
-  //       /* 
-  //         Checks if production date is selected.
-  //         Note: Date can be extracted from calendar
-  //       */ 
-  //       case doc.production_date === null || doc.production_date === undefined:
-  //         res.status(400).json({ status: "Please enter production date" });
-  //       break;   
-
-  //       /* 
-  //         Checks if expiry date is selected.
-  //         Note: Date can be extracted from calendar
-  //       */
-  //       case doc.expiry_date === null || doc.expiry_date === undefined:
-  //         res.status(400).json({ status: "Please enter expiry date" });
-  //       break;
-
-  //       // Checks if row capacity(10 tonnes/10,000kg) is exceeded
-  //       case rowWeight + doc.weight > rowCapacity:
-  //         res.status(400).json({ status: `Row number (${doc.row_num}) remaining storage space (${rowCapacity - rowWeight} tonnes) is less than ${doc.name} weight (${doc.weight} tonnes)` });
-  //       break;
-
-  //       // Checks if weight value or row value is numeric
-  //       case isNaN(doc.weight) || isNaN(doc.row_num):
-  //         res.status(400).json({ status: "Invalid value entered" });
-  //       break;
-
-  //       default:
-  //       // Save new item to database if all checks are valid
-  //       await doc.save();
-  //       res.status(200).json({ status: `${doc.name} added successfully` });
-  //     }
-  //   } 
-  //   catch (err) {
-  //     /* Handles any errors that occur while adding item to database.
-  //       Note: I prefer to use this error-handling format during dev 
-  //       as it provides useful debugging error message.
-  //     */
-  //     res.status(400).json({ error: err.message });
-  //     // res.status(400).json({ status: "Error occurred while inserting item" });
-  //   }
-  // }
+  // Method for getting items by tag
+  getItemsByTag: async (req, res) => {
+    try {
+      // Get the tag from the request parameters
+      const tag = req.params.tag;
+      console.log(tag);
+      // Find items with the specified tag
+      const items = await itemModel.find({ tag: tag });
+      
+      console.log(tag);
+      if (!items || items.length === 0) {
+        // When items with the tag name are not found
+        res.status(400).json({ status: `Sorry, no item(s) exist(s) by the tag name (${tag})` });
+      } else {
+        // Retrieves all items with the tag name
+        res.status(200).json({ status: `Items tagged (${tag}) retrieved successfully`, items });
+      }
+    } catch (error) {
+      // Handle any errors that occur while querying the database
+      console.error(error);
+      res.status(400).json({ status: "Error occurred while getting items", error });
+    }
+  },
 
 };
 
