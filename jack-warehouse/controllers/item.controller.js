@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const itemModel = require("../models/item.model");
+const itemModel = require("../models/item.model"); // Import the Model from the model modulw
 const calculateRowWeight = require("../utilities/calculateRowWeight"); // Import the calculateRowWeight function from the utility module
 
 let rowCapacity = 10000 // rowCapacity as a global variable
@@ -299,7 +299,7 @@ const itemController = {
   },
 
   // Get the total weight of all items in warehouse
-  getTotalWeight: async (req, res) => {
+  getRowsTotalWeight: async (req, res) => {
     try {
     // Find all items in warehouse
     const items = await itemModel.find();
@@ -319,7 +319,7 @@ const itemController = {
   },
 
   // Get average weight of items in a specified row
-  getAverageWeight: async (req, res) => {
+  getRowAverageWeight: async (req, res) => {
     try {
       // Get the row number from the request parameters
       const rowNum = req.params.row;
@@ -348,7 +348,7 @@ const itemController = {
   },
 
   // Get list of empty row(s)
-  getEmptyRows: async (req, res) => {
+  getAllEmptyRows: async (req, res) => {
     try {
     // Find all items in warehouse/database
     const items = await itemModel.find();
@@ -361,7 +361,6 @@ const itemController = {
     
     // Find empty rows
     const emptyRows = allRows.filter(row => !rowsWithItems.includes(row));
-    console.log(typeof emptyRows)
 
     if (Object.keys(emptyRows).length > 0) {
       // Sends a notification to Jack
@@ -381,26 +380,48 @@ const itemController = {
     }
   },
 
-  // Get the remaining capacity of the specified row
-  getRowCapacity: async (req, res) => {
+  // Get the stock level of a specified row
+  getRowStockLevel: async (req, res) => {
     try {
       // Get the row number from the request parameters
       const rowNum = req.params.row;
 
-      // Find all items in the specified row
-      const items = await itemModel.find({ row_num: rowNum });
+      switch (true) {
+        // Check if the row number is not a number
+        case isNaN(rowNum):
+          res.status(400).json({ status: "Invalid entry" });
+          break;
 
-      // Calculate the total weight of items in the row
-      const rowWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
+        // Check if the row number is less than 1
+        case rowNum < 1:
+          res.status(400).json({ status: "Row number cannot be less than 1" });
+          break;
 
-      // Calculate the remaining capacity by subtracting the row weight from the row capacity
-      const remainingCapacity = rowCapacity - rowWeight;
+        // Check if the row number is greater than 25
+        case rowNum > 25:
+          res.status(400).json({ status: "Maximum number of rows exceeded (25 rows max)" });
+          break;
 
-      // res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity });
-      res.status(200).json({ status: `Row number (${rowNum}) capacity is:`, 
-      remainingCapacity: `${remainingCapacity}kg` });
+        default:
+          // Find all items in the specified row
+          const items = await itemModel.find({ row_num: rowNum });
 
-    } 
+          // Calculate the total weight of items in the row
+          const rowWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
+
+          // Calculate the remaining capacity by subtracting the row weight from the row capacity
+          const remainingCapacity = rowCapacity - rowWeight;
+
+          // Check if the row is full to capacity
+          if (remainingCapacity < 1) {
+            res.status(400).json({ status: `Row number (${rowNum}) is full to capacity (${remainingCapacity}kg space left)` });
+          } else {
+            // Return the remaining capacity if the row is not full
+            res.status(200).json({ status: `Row number (${rowNum}) is empty (can take ${remainingCapacity}kg) of items` });
+            // res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity });
+          }
+      }
+    }
     catch (err) {
       /* Handles any errors that occur while getting the remaining storage space of a specified row.
         Note: I prefer to use this error-handling format during dev 
@@ -412,7 +433,7 @@ const itemController = {
   },
 
   // Get list of all items in a row
-  getItemsInRow: async (req, res) => {
+  getItemsByRowNum: async (req, res) => {
     try {
       // Get the row number from the request parameters
       const rowNum = req.params.row;
@@ -439,7 +460,7 @@ const itemController = {
   },
 
   // Method for finding items with same word in their names
-  getbyname: async (req, res) => {
+  getItemsByName: async (req, res) => {
     try {
 
       // Get the name from the request parameters
@@ -496,8 +517,6 @@ const itemController = {
         }
       }
 
-      console.log(typeof expiringItems)
-
       // Checks if no expiring item(s) exist(s)
       if (Object.keys(expiringItems).length > 0) {
         // Sends a notification to Jack
@@ -522,26 +541,81 @@ const itemController = {
   // Method for getting items by tag
   getItemsByTag: async (req, res) => {
     try {
-      // Get the tag from the request parameters
-      const tag = req.params.tag;
-      console.log(tag);
-      // Find items with the specified tag
-      const items = await itemModel.find({ tag: tag });
-      
-      console.log(tag);
-      if (!items || items.length === 0) {
-        // When items with the tag name are not found
-        res.status(400).json({ status: `Sorry, no item(s) exist(s) by the tag name (${tag})` });
+    // Get the tag from the request parameters
+    const tag = req.params.tag.toLowerCase();
+    console.log(tag);
+    
+    switch (true) {
+      /* 
+        Checks if the tag is not null, not defined or not empty, 
+        Note: This case will not be necessary for production as the
+        tags will have been validated before they are saved.
+        Besides, the tags will be served as a list of dropdown 
+        options to select from
+      */
+      case tag === null || tag === undefined || tag === "":
+        res.status(400).json({ status: "Tag name cannot be null or undefined" });
+        break;
+      case tag === "":
+        res.status(400).json({ status: "Tag name cannot be empty" });
+        break;
+      default:
+        // Find items with the specified tag
+        const items = await itemModel.find({ tag: tag });
+    
+        if (!items || items.length === 0) {
+          // When items with the tag name are not found
+          res.status(400).json({ status: `Sorry, no item(s) exist(s) by the tag name (${tag})` });
+        } else {
+          // Retrieves all items with the tag name
+          res.status(200).json({ status: `Items tagged (${tag}) retrieved successfully`, items });
+        }
+    }
+    } catch (error) {
+    // Handle any errors that occur while querying the database
+    console.error(error);
+    res.status(400).json({ status: "Error occurred while getting items", error });
+    }
+  },    
+
+  // Method for tracking rows running out of stock
+  getRowsRunningOutOfStock: async (req, res) => {
+    try {
+      // Initialize an array to store the row numbers
+      const rows = [];
+  
+      const halfCapacity = rowCapacity / 2; // The capacity of each row is 5,000kg (i.e. 5 tonnes)
+  
+      // Iterate through all rows from 1 to 25
+      for (let rowNum = 1; rowNum <= 25; rowNum++) {
+        // Calculate the total weight of items in the row
+        const rowWeight = await calculateRowWeight(rowNum);
+  
+        // Calculate the remaining capacity by subtracting the row weight from the row capacity
+        const remainingCapacity = rowCapacity - rowWeight;
+  
+        // Check if the remaining capacity is less than half of the row capacity
+        if (remainingCapacity < halfCapacity) {
+          // Add the row number to the array if the condition is met
+          rows.push(rowNum);
+        }
+      }
+  
+      // Checks if number of row is more than 0  
+      if (Object.keys(rows).length > 0) {
+        // Return the array of row numbers
+        res.status(200).json({ status: "Row(s) running out of stock - Jack restock or produce!:", rows });
       } else {
-        // Retrieves all items with the tag name
-        res.status(200).json({ status: `Items tagged (${tag}) retrieved successfully`, items });
+        // When no row(s) is found
+        res.status(400).json({ status: "No row is running out of stock. No need for production now :)" });
       }
     } catch (error) {
       // Handle any errors that occur while querying the database
-      console.error(error);
-      res.status(400).json({ status: "Error occurred while getting items", error });
+      res.status(400).json({ status: "Error occurred while getting rows with low capacity" });
     }
-  },
+  }
+  
+    
 
 };
 
