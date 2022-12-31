@@ -1,14 +1,32 @@
 const mongoose = require("mongoose");
 const itemModel = require("../models/item.model"); // Import the Model from the model modulw
 const calculateRowWeight = require("../utilities/calculateRowWeight"); // Import the calculateRowWeight function from the utility module
+const batchNumGenerator = require("../utilities/batchNumGenerator");
 
 let rowCapacity = 10000 // rowCapacity as a global variable
 
 const itemController = {
   create: async (req, res) => {
     try {  
-      // Create a new item using the request body
-      const doc = new itemModel(req.body);
+      // Get the production_date, expiry_date, and tag from the request body
+      const { name, weight, row_num, production_date, expiry_date, tag } = req.body;
+
+      // Generate a batch number for the item
+      const batchNum = batchNumGenerator(tag);
+
+      // Create a new item with the provided data
+      const doc = new itemModel({
+        name,
+        weight,
+        row_num,
+        production_date,
+        expiry_date,
+        tag,
+        batchNum,
+      });
+
+      // // Create a new item using the request body
+      //  doc = new itemModel(req.body);
 
       // Convert the item name to lowercase
       doc.name = doc.name
@@ -23,10 +41,10 @@ const itemController = {
       .toLowerCase()
       .trim()
       .replace(/[^a-zA-Z]/g, ' ')
-    
+
       // Calculate the total weight of items in the row
       const rowWeight = await calculateRowWeight(doc.row_num);
-    
+
       switch (true) {
         // Checks if no name is entered for item
         case doc.name === "":
@@ -36,7 +54,7 @@ const itemController = {
         case doc.tag === "":
           res.status(400).json({ status: "Please, select a tag for this item"})
         break;
-        
+
         // Checks if item weight is less than 1 tonne
         case doc.weight < 1:
           res.status(400).json({ status: "Item weight cannot be less than 1 tonne" });
@@ -90,8 +108,10 @@ const itemController = {
         // Save new item to database if all checks are valid
         await doc.save();
         res.status(200).json({ status: `${doc.name} added successfully` });
+
       }
     } 
+    
     catch (err) {
       /* Handles any errors that occur while adding item to database.
         Note: I prefer to use this error-handling format during dev 
