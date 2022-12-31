@@ -40,6 +40,10 @@ const ItemSchema = new Schema({
     type: Date,
     required: true,
     default: ""
+  },
+  batchNum: {
+    type: String,
+    required: true
   }
 },
 
@@ -47,6 +51,6 @@ const ItemSchema = new Schema({
 
 );
 
-const Items = mongoose.model("Items", ItemSchema);
+const ItemModel = mongoose.model("ItemModel", ItemSchema);
 
-module.exports = Items;
+module.exports = ItemModel;
