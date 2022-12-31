@@ -16,5 +16,6 @@ router.get("/rowcapacity/:row", itemController.getRowCapacity);
 router.get("/row/:row", itemController.getItemsInRow);
 router.get("/getbyname/:name", itemController.getbyname);
 router.get("/find_expiring_items", itemController.findExpiringItems);
+router.get("/get_items_by_tag/:tag", itemController.getItemsByTag);
 
 module.exports = router;
