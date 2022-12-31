@@ -107,7 +107,22 @@ const itemController = {
     try {
       // Fetch all items from database
       const items = await itemModel.find();
-      res.status(200).json({ status: "Items retrieved successfully", items });
+
+      // if (Object.keys(emptyRows).length > 0) {
+      //   // Sends a notification to Jack
+      //   res.status(200).json({ status: "Empty row(s):", emptyRows });
+      //   } else {
+      //   // When no expiring item is found
+      //   res.status(400).json({ status: "No empty row found. All rows are currently stocked. :)" });
+      // }
+
+      if (Object.keys(items).length > 0) {
+        // Checks if there is no item in the warehouse 
+        res.status(400).json({ status: "All item(s) in the warehouse:", items });
+      } else {
+        // In the event that no item was found in the database
+        res.status(200).json({ status: "Warehouse is empty" });
+      }
     } 
     catch (err) {
       /* Handles any errors that occur while fetching all items in database.
@@ -130,10 +145,10 @@ const itemController = {
 
       // If the item was not found, return a 400 response
       if (!item) {
-        res.status(400).json({ status: "Item not found" });
+        res.status(400).json({ status: `Item with ID number (${objectId}) was not found` });
       } else {
         // If the item was found, return it in the response
-        res.status(200).json({ status: "Item retrieved by id successfully", item });
+        res.status(200).json({ status: `Item ID number (${objectId}) retrieved successfully` });
       }
     } 
     catch (err) {
@@ -157,7 +172,7 @@ const itemController = {
     
     // If the item was not found, return a 400 response
     if (!item) {
-      res.status(400).json({ status: "Item not found" });
+      res.status(400).json({ status: `Item with ID number (${objectId}) was not found` });
     } 
     else {
       // Update the item details with the request body
@@ -169,6 +184,9 @@ const itemController = {
 
       item.weight = req.body.weight;
       item.row_num = req.body.row_num;
+      item.tag = req.body.tag;
+      item.expiry_date = req.body.expiry_date;
+      item.production_date = req.body.production_date;
     
       // Calculate the total weight of items in the row
       const rowWeight = await calculateRowWeight(item.row_num);
@@ -180,6 +198,11 @@ const itemController = {
           res.status(400).json({ status: "Please, enter item name" });
         break; 
     
+        // Checks if no tag is entered for item
+        case item.tag === "":
+          res.status(400).json({ status: "Please, enter item tag" });
+        break; 
+
         // Checks if item weight is less than 1 tonne
         case item.weight < 1:
           res.status(400).json({ status: "Item weight cannot be less than 1 tonne" });
@@ -224,7 +247,7 @@ const itemController = {
           Checks if expiry date is selected.
           Note: Date can be extracted from calendar
         */
-        case item.expiry_date === null || item.expiry_date === undefined:
+        case item.expiry_date === null || item.expiry_date === undefined || item.expiry_date === "":
           res.status(400).json({ status: "Please enter expiry date" });
         break;
 
@@ -265,7 +288,7 @@ const itemController = {
     
       // If the item was not found, return a 400 response
       if (!item) {
-        res.status(400).json({ status: "Item not found" });
+        res.status(400).json({ status: `Item with ID number (${objectId}) was not found` });
       } else {
         // Delete the item from the database
         await item.delete();
@@ -292,7 +315,7 @@ const itemController = {
     // Calculate the total weight by summing the weight of each item
     const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
     
-    res.status(200).json({ status: "Total weight of all inventory retrieved successfully", totalWeight });
+    res.status(200).json({ status: `Total weight of all stocks is: (${totalWeight}kg)` });
     } catch (err) {
       /* Handles any errors that occur while getting total weight of items in warehouse.
         Note: I prefer to use this error-handling format during dev 
@@ -313,14 +336,14 @@ const itemController = {
       const items = await itemModel.find({ row_num: rowNum });
 
       if (items.length === 0) {
-        res.status(200).json({ status: "This row is empty" });
+        res.status(200).json({ status: `Row number (${rowNum}) is empty` });
       } else {
         // Calculate the average weight by dividing the total weight by the number of items
         const totalWeight = items.reduce((accumulator, currentValue) => accumulator + currentValue.weight, 0);
         const averageWeight = totalWeight / items.length;
 
         // res.status(200).json({ status: "Average weight retrieved successfully", averageWeight });
-        res.status(200).json({ status: `Average weight of row ${rowNum} items retrieved successfully`, averageWeight });
+        res.status(200).json({ status: `Average weight of items in row number (${rowNum}) is: (${averageWeight}kg)` });
       }
     } catch (err) {
       /* Handles any errors that occur while getting average weight of items in a row.
@@ -346,8 +369,16 @@ const itemController = {
     
     // Find empty rows
     const emptyRows = allRows.filter(row => !rowsWithItems.includes(row));
-    
-    res.status(200).json({ status: "Empty rows retrieved successfully", emptyRows });
+    console.log(typeof emptyRows)
+
+    if (Object.keys(emptyRows).length > 0) {
+      // Sends a notification to Jack
+      res.status(200).json({ status: "Empty row(s):", emptyRows });
+      } else {
+      // When no expiring item is found
+      res.status(400).json({ status: "No empty row found. All rows are currently stocked. :)" });
+    }
+
     } catch (err) {
       /* Handles any errors that occur while updating item.
         Note: I prefer to use this error-handling format during dev 
@@ -374,7 +405,7 @@ const itemController = {
       const remainingCapacity = rowCapacity - rowWeight;
 
       // res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity });
-      res.status(200).json({ status: `Row (${rowNum}) capacity retrieved successfully`, 
+      res.status(200).json({ status: `Row number (${rowNum}) capacity is:`, 
       remainingCapacity: `${remainingCapacity}kg` });
 
     } 
