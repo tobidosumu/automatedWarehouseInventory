@@ -29,7 +29,7 @@ const ItemSchema = new Schema({
   tag: {
     type: String,
     required: true,
-    default: "default-tag"
+    default: ""
   },
   production_date: {
     type: Date,
