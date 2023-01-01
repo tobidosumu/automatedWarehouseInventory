@@ -54,11 +54,10 @@ https://github.com/Adenikecass
 *My team member and I would like to believe that the functionalities*
 *listed above will help Jack manage production and expiry of his inventory*
 *thus, automating operations and ensuring the smooth running of his business.*
-*We wish Jack all the best!*
+*We wish Jack all the best!*🙌😊
 
 ## Appreciation:
 ### Special thanks to my team member <a href="https://github.com/Adenikecass">Adenike Margaret</a> for her valuable contributions and support. 
 ### Your idea to tag items of the same type has been incredibly helpful in organizing items in the inventory. 
-### Your advice to focus on developing key features rather than trying to perfect everything has allowed us to make significant
-### progress and to finish on time. 
+### Your advice to focus on developing key features rather than trying to perfect everything has allowed us to make significant progress and to finish on time. 
 ### It was a pleasure working with you.
