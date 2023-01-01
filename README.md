@@ -30,13 +30,13 @@ https://github.com/Adenikecass
 - MONGO_URI="" 
 
 ## Project Deadline:
-### January, 3rd, 2023
+- January, 3rd, 2023
 
 ## Start Date:
-### December, 26th, 2022
+- December, 26th, 2022
 
 ## Project Completed:
-### December, 31st, 2022
+- December, 31st, 2022
 
 ## App Functionalities
 - Create item
