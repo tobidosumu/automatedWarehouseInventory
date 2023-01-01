@@ -32,8 +32,11 @@ https://github.com/Adenikecass
 ## Project Deadline:
 ### January, 3rd, 2023
 
+## Start Date:
+### December, 26th, 2022
+
 ## Project Completed:
-### December, 31st, 2023
+### December, 31st, 2022
 
 ## App Functionalities
 - Create item
