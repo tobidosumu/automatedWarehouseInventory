@@ -21,9 +21,9 @@ const ItemSchema = new Schema({
     required: true,
     default: 0
   },
-  row_weight: {
+  row_capacity: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 10000 // (kg)
   },
   tag: {
@@ -51,6 +51,6 @@ const ItemSchema = new Schema({
 
 );
 
-const ItemModel = mongoose.model("ItemModel", ItemSchema);
+const ItemModel = mongoose.model("inventory", ItemSchema);
 
 module.exports = ItemModel;
