@@ -9,26 +9,83 @@ const itemController = {
   create: async (req, res) => {
     try {  
       // Get the production_date, expiry_date, and tag from the request body
-      const { name, weight, row_num, production_date, expiry_date, tag } = req.body;
-
+      let { name, weight, production_date, expiry_date, tag } = req.body;
+  
+      // Define the row capacity
+      const rowCapacity = 10000;
+  
+      name = name
+      // Converts item name to lowercase
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-zA-Z]/g, ' ')
+  
+      tag = tag
+      // Converts item tag to lowercase
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-zA-Z]/g, ' ')
+  
       // Generate a batch number for the item
       const batchNum = batchNumGenerator(tag);
-
-      // Create a new item with the provided data
+  
+      // Check if an item with the same name already exists in the database
+      const existingItem = await itemModel.findOne({ name });
+      // console.log(existingItem);
+  
+      // Assign the row_num of the new item based on the following conditions:
+      let rowNum;
+      if (!existingItem) {
+        // If no item with the same name exists, assign the new item a new row_num that has not been assigned to any item
+        let emptyRowNum;
+        for (let i = 1; i <= 25; i++) {
+          const rowWeight = await calculateRowWeight(i);
+          if (rowWeight === 0) {
+            emptyRowNum = i;
+            break;
+          }
+        }
+        rowNum = emptyRowNum;
+      } else {
+        // If an item with the same name exists, check if the row_num is full
+        const rowWeight = await calculateRowWeight(existingItem.row_num);
+  
+        if (rowWeight + weight > rowCapacity) {
+  
+          // If the row_num is full, find an empty row_num within the range of 1 to 25
+          let emptyRowNum;
+          for (let i = 1; i <= 25; i++) {
+            const rowWeight = await calculateRowWeight(i);
+            if (rowWeight < rowCapacity) {
+              emptyRowNum = i;
+              break;
+            }
+          }
+  
+          // If no empty row_num is found, return an error
+          if (!emptyRowNum) {
+            res.status(400).json({ status: "No empty row available" });
+            return;
+          }
+          // Assign the new item the empty row_num
+          rowNum = emptyRowNum;
+        } else {
+          // If the row_num is not full, assign the new item the same row_num as the existing item
+          rowNum = existingItem.row_num;
+        }
+      }
+  
+      // Create a new item with the provided data and the assigned row_num
       const doc = new itemModel({
         name,
         weight,
-        row_num,
+        row_num: rowNum,
         production_date,
         expiry_date,
         tag,
         batchNum,
       });
 
-      // // Create a new item using the request body
-      //  doc = new itemModel(req.body);
-
-      // Convert the item name to lowercase
       doc.name = doc.name
       // Converts item name to lowercase
       .toLowerCase()
@@ -105,23 +162,36 @@ const itemController = {
         break;
 
         default:
+
+        // const remainingCapacity = rowCapacity - weight;
+        const remainingCapacity = rowCapacity - (rowWeight + weight);
+        
+        doc.row_capacity = remainingCapacity;
+
+        // console.log(remainingCapacity);
+        // console.log(rowWeight + weight);
+        // console.log(weight);
+
+        // Save the new item with the remaining row_capacity to the database
+        const savedItem = await doc.save();
+
         // Save new item to database if all checks are valid
         await doc.save();
         res.status(200).json({ status: `${doc.name} added successfully` });
 
       }
+        
     } 
-    
     catch (err) {
       /* Handles any errors that occur while adding item to database.
-        Note: I prefer to use this error-handling format during dev 
-        as it provides useful debugging error message.
+      Note: I prefer to use this error-handling format during dev 
+      as it provides useful debugging error message.
       */
       res.status(400).json({ error: err.message });
       // res.status(400).json({ status: "Error occurred while inserting item" });
     }
   },
-
+  
   // Get all items/objects from the database
   getall: async (req, res) => {
     try {
@@ -437,7 +507,7 @@ const itemController = {
             res.status(400).json({ status: `Row number (${rowNum}) is full to capacity (${remainingCapacity}kg space left)` });
           } else {
             // Return the remaining capacity if the row is not full
-            res.status(200).json({ status: `Row number (${rowNum}) is empty (can take ${remainingCapacity}kg) of items` });
+            res.status(200).json({ status: `Row number (${rowNum}) is not full (can take ${remainingCapacity}kg) of items more` });
             // res.status(200).json({ status: "Row capacity retrieved successfully", remainingCapacity });
           }
       }
@@ -634,8 +704,6 @@ const itemController = {
       res.status(400).json({ status: "Error occurred while getting rows with low capacity" });
     }
   }
-  
-    
 
 };
 
