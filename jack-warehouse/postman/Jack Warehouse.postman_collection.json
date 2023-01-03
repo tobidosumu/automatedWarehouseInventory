@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Cherry Blast\",\r\n  \"weight\": 1000,\r\n  \"row_num\": 20,\r\n  \"tag\": \"Blast\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
+							"raw": "{\r\n  \"name\": \"Mango juice\",\r\n  \"weight\": 6000,\r\n  \"row_num\": \"\",\r\n  \"row_capacity\": \"\",\r\n  \"tag\": \"juice\",\r\n  \"batchNum\": \"\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -84,14 +84,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/getbyid/63b02e43b27148438b660cfa",
+							"raw": "{{jackurl}}/item/getbyid/63b3026a6b2910d31f087923",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"getbyid",
-								"63b02e43b27148438b660cfa"
+								"63b3026a6b2910d31f087923"
 							]
 						}
 					},
@@ -104,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mango blast\",\r\n    \"weight\": 10,\r\n    \"row_num\": 1,\r\n    \"tag\": \"\",\r\n    \"production_date\": \"2022-12-29\",\r\n    \"expiry_date\": \"2023-12-31\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Orange Juice\",\r\n  \"weight\": 10,\r\n  \"row_num\": \"1\",\r\n  \"tag\": \"Juice\",\r\n  \"batchNum\": \"\",\r\n  \"production_date\": \"2022-12-31\",\r\n  \"expiry_date\": \"2022-12-31\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/update/63b02e43b27148438b660cfa",
+							"raw": "{{jackurl}}/item/update/63b3026a6b2910d31f087923",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"update",
-								"63b02e43b27148438b660cfa"
+								"63b3026a6b2910d31f087923"
 							]
 						}
 					},
@@ -140,14 +140,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{jackurl}}/item/delete/63b02e43b27148438b660cfa",
+							"raw": "{{jackurl}}/item/delete/63b29a4bf795ba9fe365006c",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"delete",
-								"63b02e43b27148438b660cfa"
+								"63b29a4bf795ba9fe365006c"
 							]
 						}
 					},
@@ -177,14 +177,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/get_average_weight/2",
+							"raw": "{{jackurl}}/item/get_average_weight/25",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"get_average_weight",
-								"2"
+								"25"
 							]
 						}
 					},
@@ -214,14 +214,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/row_stock_level/24",
+							"raw": "{{jackurl}}/item/row_stock_level/1",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"row_stock_level",
-								"24"
+								"1"
 							]
 						}
 					},
@@ -233,14 +233,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/get_items_by_row_number/24",
+							"raw": "{{jackurl}}/item/get_items_by_row_number/1",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"get_items_by_row_number",
-								"24"
+								"1"
 							]
 						}
 					},
@@ -252,14 +252,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{jackurl}}/item/get_items_by_name/juice",
+							"raw": "{{jackurl}}/item/get_items_by_name/orange",
 							"host": [
 								"{{jackurl}}"
 							],
 							"path": [
 								"item",
 								"get_items_by_name",
-								"juice"
+								"orange"
 							]
 						}
 					},
