@@ -1,6 +1,6 @@
 .gitignore
 # dotenv environment variables file
-.env
+env
 .env-sample
 
 # production
