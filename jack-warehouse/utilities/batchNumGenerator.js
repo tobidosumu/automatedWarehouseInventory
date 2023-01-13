@@ -8,5 +8,4 @@ function batchNumGenerator(tag) {
   return batchNum;
 }
 
-
 module.exports = batchNumGenerator;
