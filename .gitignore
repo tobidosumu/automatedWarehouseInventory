@@ -1,3 +1,13 @@
 .gitignore
-env/
+# dotenv environment variables file
+.env
+.env-sample
+
+# production
+/build
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/uploads
 node_modules/
